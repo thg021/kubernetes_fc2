@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: goserver
+  labels:
+    app: goserver
+spec:
+  selector:
+    matchLabels:
+      app: goserver
+  replicas: 2
+  template:
+    metadata:
+      labels: #criar uma etiqueta, para ajudar fazer filtros, buscas e regras
+        app: "goserver"
+    spec: #especificação
+      containers:
+        - name: goserver
+          image: "thgsdev/go-test:latest"

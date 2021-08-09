@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod #tipo
+metadata:
+  name: "goserver" #nome do nosso servidor
+  labels: #criar uma etiqueta, para ajudar fazer filtros, buscas e regras
+    app: "goserver"
+spec: #especificação
+  containers:
+    - name: goserver
+      image: "thgsdev/go-test:latest"

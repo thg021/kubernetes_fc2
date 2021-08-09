@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goserver
+  labels:
+    app: goserver
+spec:
+  selector:
+    matchLabels:
+      app: goserver
+  replicas: 2
+  template:
+    metadata:
+      labels: #criar uma etiqueta, para ajudar fazer filtros, buscas e regras
+        app: "goserver"
+    spec: #especificação
+      containers:
+        - name: goserver
+          image: "thgsdev/go-test:v4.1"
+          # configuração para subirmos todas as variaveis
+          envFrom:
+            - configMapRef:
+                name: goserver-env
+            - secretRef:
+                name: goserver-secret
+          volumeMounts:
+            - mountPath: "/go/myfamily"
+              name: "config"
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-family
+            items:
+              - key: members
+                path: "family.txt"
+          #trabalhando com variaveis de ambientes
+          # env:
+          #   - name: "NAME"
+          #     # value: "Thiago"
+          #     # utilizando o configMap
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: goserver-env
+          #         key: NAME
+          #   - name: "AGE"
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: goserver-env
+          #         key: age
